@@ -1,6 +1,6 @@
 package org.example;
 
-public class ArrayList<E> {
+public class ArrayList<E extends Comparable<E>> {
     private static final int SIZE=10;
     private static final Object[] EMPTY_ARRAY = {};
     private  Object[] array;
@@ -30,8 +30,9 @@ public class ArrayList<E> {
         return size;
     }
 
-    public Object get(int index){
-        return array[index];
+    @SuppressWarnings("unchecked")
+    public E get(int index){
+        return (E)array[index];
     }
 
     public void add(E obj){
@@ -115,5 +116,30 @@ public class ArrayList<E> {
             System.arraycopy(array, 0, newArray, 0, size);
         array=newArray;
         capacity=newSize;
+    }
+}
+class Quick<E extends Comparable<E>>{
+    private void QuickSort(int left, int right, ArrayList<E> array){
+        if (array.size() == 0 || left >= right) return;
+        int middle = left + (right - left) / 2;
+        E line = array.get(middle);
+        int i = left, j = right;
+        while (i <= j) {
+            while ((array.get(i).compareTo(line)<0)) i++;
+            while (array.get(j).compareTo(line)>0) j--;
+            if (i <= j) {
+                E swap = array.get(i);
+                array.set(i,array.get(j));
+                array.set(j,swap);
+                i++;
+                j--;
+            }
+        }
+        if (left < j) QuickSort(left, j,array);
+        if (right > i) QuickSort(i, right,array);
+    }
+
+    public void Sort(ArrayList<E> array){
+        QuickSort(0,array.size()-1,array);
     }
 }
