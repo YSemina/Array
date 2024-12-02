@@ -1,20 +1,33 @@
 package org.example;
 /**
- *Переменные в ArrayList:
- * Статические, т.к. не нужны для каждого экземпляра класса:
- * SIZE - константа для задания емкости массива по умолчанию
- * EMPTY_ARRAY - заготовка для создания пустого массива
-
- * Не статические:
- * array - массив типа Object
- * capacity - емкость массива
- * size - количество ненулевых элементов
+ *Класс для хранения массива данных.
+ * @author - Юля Семина
  */
 public class ArrayList<E extends Comparable<E>> {
+    /**
+     * Переменная для задания ёмкости массива, если используется конструктор по умолчанию
+     * @see ArrayList#ArrayList()
+     */
     private static final int SIZE=10;
+    /**
+     * Переменная для создания пустого массива, если в качестве ёмкости был передан 0
+     * @see ArrayList#ArrayList(int capacity)
+     * Переменная также используется при удалении массива
+     * @see ArrayList#removeAll()
+     */
     private static final Object[] EMPTY_ARRAY = {};
+    /**
+     * Массив типа Object
+     */
     private  Object[] array;
+    /**
+     * Переменная для задания ёмкости массива
+     */
     private int capacity;
+    /**
+     * Переменная, отвечающая за количество элементов в
+     * @see ArrayList
+     */
     private int size=0;
 
     /**
@@ -25,9 +38,9 @@ public class ArrayList<E extends Comparable<E>> {
         capacity=SIZE;
     }
     /**
-     *Конструктор, принимающий в качестве параметра емкость массива.
-     *Если передается 0, создается пустой массив.
-     * Если передается отрицательное значение, выбрасывается исключение, потому что нельзя создавать массив с отрицательным кол-вом элементов.
+     *Конструктор
+     *@param capacity переменная для задания ёмкости массива
+     *@exception IllegalArgumentException возникает, если переданный параметр - отрицательный
      */
     public  ArrayList (int capacity){
         if(capacity==0){
@@ -43,26 +56,34 @@ public class ArrayList<E extends Comparable<E>> {
         }
     }
     /**
-     *Возвращает количество ненулевых элементов
+     *@return возвращает количество элементов в
+     * @see ArrayList
+     * @see ArrayList#size
      */
     public int size(){
         return size;
     }
     /**
-     *Возвращает ёмкость массива
+     *@return возвращает ёмкость массива
+     * @see ArrayList
+     * @see ArrayList#capacity
      */
     public int capacity(){
         return capacity;
     }
     /**
-     *Возвращает элемент по переданному индексу
+     *@param index индекс, по которому находится объект
+     *@return возвращает элемент по переданному индексу
      */
     @SuppressWarnings("unchecked")
     public E get(int index){
         return (E)array[index];
     }
     /**
-     *Принимает в кач-ве параметра объект, добавляет его по порядку
+     * Добавляет объект в конец массива
+     * @param obj объект, который нужно добавить в массив.
+     * Увеличивает емкость массива, если места недостаточно
+     * @see ArrayList#resize(int)
      */
     public void add(E obj){
         if(size<capacity){
@@ -74,11 +95,12 @@ public class ArrayList<E extends Comparable<E>> {
         }
     }
     /**
-     *Принимает индекс, по которому нужно добавить и сам объект.
-     * Если емкости недостаточно, увеличиваем емкость в 2 раза
-     * Если переданный индекс больше емкости, метод завершает работу, предварительно выводя сообщение и незаконости действия
-     * Если по предшествующему индексу нет элемента (null) метод завершает работу, предварительно выводя сообщение
-     * Если проверки пройдены, то добавляется элемент
+     * Добавляет объект по указанному индексу.
+     * При некорректной передаче index выводит предупреждающие сообщения и завершает работу.
+     * @param index индекс, по которому нужно добавить объект.
+     * @param obj объект, который нужно добавить.
+     * Увеличивает емкость массива, если места недостаточно
+     * @see ArrayList#resize(int)
      */
     public void add(int index,E obj){
         if(size==capacity){
@@ -100,10 +122,9 @@ public class ArrayList<E extends Comparable<E>> {
         }
     }
     /**
-     *Принимает индекс, по которому нужно удалить элемент
-     * Если индекс выходит за рамки емкости массива, метод завершает работу с прдепреждающим сообщением
-     * Если массив пуст, метод завершает работу, предварительно выводя сообщение
-     * Если элемент по указанному индексу существует,он удаляетсяж если нет - выводится сообщение об отсутствии элемента
+     * Удаляет элемент по указанному индексу.
+     * При некорректной передаче index выводит предупреждающие сообщения и завершает работу.
+     * @param index индекс, по которму нужно удалить объект.
      */
     public void remove(int index){
         if (index >= capacity) {
@@ -127,7 +148,7 @@ public class ArrayList<E extends Comparable<E>> {
         }
     }
     /**
-     *Делает массив пустым
+     * После вызова метода, массив содержит ссылку на пустой массив.
      */
     public  void removeAll(){
         array=EMPTY_ARRAY;
@@ -136,8 +157,9 @@ public class ArrayList<E extends Comparable<E>> {
         System.out.println("ArrayList теперь пуст.");
     }
     /**
-     *Принимает индекс, по которому нужно установить значение и элемент, который нужно вставить по этому индексу.
-     * Не устанавливает значение, если предшествующий элемент пуст
+     * Устанавливает переданное значение по указанному индексу. Если по предыдущему индексу нет элемента, выводит предупреждающее сообщение.
+     * @param index индекс, по которому нужно установить значение.
+     * @param obj объект, которым нужно заменить значение по индексу.
      */
     public void set(int index, E obj){
         if (index>=capacity){
@@ -158,7 +180,10 @@ public class ArrayList<E extends Comparable<E>> {
         }
     }
     /**
-     *Этот метод используется add'ом, чтобы подвинуть другие элементы
+     * Приватный метод для вставки элемента в середину.
+     * @see ArrayList#add(int, E)
+     * @param index индекс, по которому нужно вставить элемент.
+     * @param obj объект, значение которого нужно установить по указанному индексу.
      */
     private void insert(int index,E obj){
         Object[] newArray=new Object[++capacity];
@@ -175,7 +200,10 @@ public class ArrayList<E extends Comparable<E>> {
         array=newArray;
     }
     /**
-     *Приватный метод для увеличения емкости
+     * Приватный метод для увеличения емкости.
+     * @param  newSize новый размер массива.
+     * @see ArrayList#add(int, E)
+     * @see ArrayList#set(int, E)
      */
     private void resize(int newSize){
         Object[] newArray=new Object[newSize];
@@ -188,7 +216,10 @@ public class ArrayList<E extends Comparable<E>> {
 
 class Quick<E extends Comparable<E>>{
     /**
-     *Быстрая сортировка
+     * Быстрая сортировка
+     * @param left левая граница.
+     * @param right правая граница.
+     * @param array массив, который нужно отсортировать.
      */
     private void QuickSort(int left, int right, ArrayList<E> array){
         if (array.size() == 0 || left >= right) return;
@@ -210,7 +241,8 @@ class Quick<E extends Comparable<E>>{
         if (right > i) QuickSort(i, right,array);
     }
     /**
-     *Публичный метод для удобного, короткого названия
+     * Сортирует ArrayList.
+     * @param array массив, который нужно отсортировать.
      */
     public void Sort(ArrayList<E> array){
         QuickSort(0,array.size()-1,array);
