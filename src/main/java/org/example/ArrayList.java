@@ -140,29 +140,29 @@ public class ArrayList<E extends Comparable<E>> {
      * Не устанавливает значение, если предшествующий элемент пуст
      */
     public void set(int index, E obj){
+        if (index>=capacity){
+            System.out.println("Элемента с индексом "+index+" не существует!");
+            return;
+        }
         if(size==capacity-1){
             resize(capacity*2);
         }
-        if ((index < capacity) &&(index==0)||((index < capacity) && (array[index-1] != null))) {
-            add(index,obj);
+        if((index==0)||(array[index-1] != null)){
+            if(array[index]==null){
+                size++;
+            }
+            array[index]=obj;
         }
         else{
             System.out.println("Невозможно установить значение, потому что предыдущий индекс пуст.");
         }
     }
     /**
-     *"Сухая" вставка элемента без сдвига других элементов, для сортировки
-     */
-    public  void setForSort(int index,E obj){
-        array[index]=obj;
-    }
-    /**
      *Этот метод используется add'ом, чтобы подвинуть другие элементы
      */
     private void insert(int index,E obj){
-        Object[] newArray=new Object[capacity];
+        Object[] newArray=new Object[++capacity];
         if (index >= 0) {
-            //System.arraycopy(array, 0, newArray, 0, index);
             for(int i=0;i<index;++i){
                 newArray[i]=array[i];
             }
@@ -170,7 +170,7 @@ public class ArrayList<E extends Comparable<E>> {
                 newArray[i]=array[i-1];
             }
             newArray[index] = obj;
-            //System.arraycopy(array,index,newArray,index+1,++size-index-1);
+            ++size;
         }
         array=newArray;
     }
@@ -200,8 +200,8 @@ class Quick<E extends Comparable<E>>{
             while (array.get(j).compareTo(line)>0) j--;
             if (i <= j) {
                 E swap = array.get(i);
-                array.setForSort(i,array.get(j));
-                array.setForSort(j,swap);
+                array.set(i,array.get(j));
+                array.set(j,swap);
                 i++;
                 j--;
             }
